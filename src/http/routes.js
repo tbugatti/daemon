@@ -239,6 +239,45 @@ RestServer.post('/v1/server/unsuspend', (req, res, next) => {
     return next();
 });
 
+// Backup
+const BackupController = rfr('src/controllers/BackupController.js');
+
+RestServer.post('/v1/server/backup/create', (req, res, next) => {
+    const Backup = new BackupController(Auth, req, res);
+    Backup.backupCreate();
+    return next();
+});
+
+RestServer.post('/v1/server/backup/restore', (req, res, next) => {
+    const Backup = new BackupController(Auth, req, res);
+    Backup.backupRestore();
+    return next();
+});
+
+RestServer.post('/v1/server/backup/delete', (req, res, next) => {
+    const Backup = new BackupController(Auth, req, res);
+    Backup.backupDeleteUser();
+    return next();
+});
+
+RestServer.post('/v1/server/backup/delete/admin', (req, res, next) => {
+    const Backup = new BackupController(Auth, req, res);
+    Backup.backupDeleteAdmin();
+    return next();
+});
+
+RestServer.get('/v1/server/backup/download/:token', (req, res, next) => {
+    const Backup = new BackupController(Auth, req, res);
+    Backup.backupDownload();
+    return next();
+});
+
+RestServer.post('/v1/server/backup/delete/command', (req, res, next) => {
+    const Backup = new BackupController(Auth, req, res);
+    Backup.backupDeleteCommand();
+    return next();
+});
+
 RestServer.listen(Config.get('web.listen', 8080), Config.get('web.host', '0.0.0.0'), () => {
     Log.info(Util.format(
         'Pterodactyl Daemon is now listening for %s connections on %s:%s',
